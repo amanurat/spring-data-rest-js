@@ -1,0 +1,27 @@
+define(function() {
+
+    function ${repoName}ColaAdapter(${repoName}Repo) {
+        this._${repoName}Repo = ${repoName}Repo;
+    }
+    
+    ${repoName}ColaAdapter.prototype = {
+        provide: true,
+        
+        add: function(${repoName}) {
+        },
+        
+        update: function(${repoName}) {
+            this._${repoName}Repo.save(${repoName});
+        },
+        
+        forEach: function(lambda) {
+            this._${repoName}Repo.findAll()
+                .then(function(response) {
+                    // TODO loop through response, call lambda for each item
+                });
+        }
+    };
+    
+    return ${repoName}ColaAdapter;
+
+});

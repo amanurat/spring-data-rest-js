@@ -1,0 +1,41 @@
+define(function() {
+
+  function ${repoName}Repository(rest) { this._rest = rest; }
+
+  ${repoName}Repository.prototype = {
+    //
+    // Query methods
+    //
+#foreach ($mapEntry in $queryMethods.entrySet())
+#set ($methodName = $mapEntry.key)
+#set ($params = $mapEntry.value)
+    $methodName : function(#foreach ($param in $params) $param#if ($velocityCount != $params.size()), #end #end) {
+        return this._rest({path: '${resourcePath}/search/$methodName?#foreach ($param in $params)$param='+$param#if ($velocityCount != $params.size())+'&#end#end});
+    },
+    
+#end
+
+    //
+    // CRUD methods
+    //
+    findAll: function() {
+        return this._rest({path: '${resourcePath}'});
+    },
+
+    findOne: function(id) {
+        return this._rest({path: '${resourcePath}/' + id});
+    },
+
+    delete: function(id) {
+        return this._rest({path: '${resourcePath}/' + id, method: 'DELETE'});
+    },
+
+    save: function(contact) {
+        console.log('Saving a contact: ', contact);
+        return this._rest({path: '${resourcePath}/', method: 'POST', entity: JSON.stringify(contact)})
+    }
+
+  };
+
+  return ${repoName}Repository;
+});
